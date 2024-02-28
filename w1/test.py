@@ -1,12 +1,16 @@
 import os
-from w1.main import get_sales_information
-from w1.utils import DataReader
-import constants
-from global_utils import blockPrint, enablePrint
+import sys
+from main import get_sales_information
+from utils import DataReader
 from pprint import pprint
 
 CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+print(CURRENT_FOLDER)
+PARENT_DIR = os.path.dirname(CURRENT_FOLDER)
+sys.path.append(PARENT_DIR)
 
+import constants
+from global_utils import blockPrint, enablePrint
 
 def test_data_reader():
     col_names = [constants.OutDataColNames.STOCK_CODE, constants.OutDataColNames.DESCRIPTION,
@@ -50,3 +54,6 @@ def test_revenue_per_region():
     assert all([len(each) > 0 for each in revenue_data])
 
     pprint(revenue_data)
+
+if __name__ == '__main__':
+    test_revenue_per_region()

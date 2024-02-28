@@ -118,12 +118,11 @@ class DataReader:
         for n_row, row in enumerate(open(self._fp, "r")):
             row_vals = row.strip('\n').split(self._sep)
             
-            # define the row_vals dictionary 
-            row_vals = #### [YOUR CODE HERE] ####
-            row_vals['n_row'] = #### [YOUR CODE HERE] ####
-
+            temp_dict = {self._col_names[i]: val for i, val in enumerate(row_vals)}
+            print(row_vals)
             # return results: 
             #### [YOUR CODE HERE] ####
+            yield temp_dict
     
     ######################################## YOUR CODE HERE ##################################################
 

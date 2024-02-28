@@ -1,17 +1,33 @@
+import os
+import sys
+
+CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+print(CURRENT_FOLDER)
+PARENT_DIR = os.path.dirname(CURRENT_FOLDER)
+sys.path.append(PARENT_DIR)
+
 import constants
-from w1.data_processor import DataProcessor
+from data_processor import DataProcessor
 from pprint import pprint
 from typing import Dict
 from tqdm import tqdm
-import os
 import argparse
 from global_utils import get_file_name, make_dir, plot_sales_data
 from datetime import datetime
 import json
+from functools import reduce
 
 
-CURRENT_FOLDER_NAME = os.path.dirname(os.path.abspath(__file__))
+def aggregate_prices(aggregate, row):
+    country = row[constants.OutDataColNames.COUNTRY]
+    total_price = float(row[constants.OutDataColNames.TOTAL_PRICE])
 
+    if country in aggregate:
+        aggregate[country] += total_price
+    else:
+        aggregate[country] = total_price
+
+    return aggregate
 
 def revenue_per_region(dp: DataProcessor) -> Dict:
     """
@@ -44,21 +60,27 @@ def revenue_per_region(dp: DataProcessor) -> Dict:
     }
     """
     ######################################## YOUR CODE HERE ##################################################
-    data_reader = #### [YOUR CODE HERE] ####
-    data_reader_gen = #### [YOUR CODE HERE] ####
+    data_reader = dp.data_reader
+    data_reader_gen = (row for row in data_reader)
 
     # skip first row as it is the column name
     _ = next(data_reader_gen)
 
+
+    # Initial dict
+    initial_aggregate = {}
+
+    # Aggregate using reduce
+    final_aggregate = reduce(aggregate_prices, data_reader_gen, initial_aggregate)
+
     # initialize the aggregate variable
-    aggregate = dict()
+    # aggregate = {}
+    # for row in tqdm(data_reader_gen):
+    #     if row[constants.OutDataColNames.COUNTRY] not in aggregate:
+    #         aggregate[row[constants.OutDataColNames.COUNTRY]] = float(row[constants.OutDataColNames.TOTAL_PRICE])
+    #     aggregate[row[constants.OutDataColNames.COUNTRY]] += float(row[constants.OutDataColNames.TOTAL_PRICE])
 
-    for row in tqdm(data_reader_gen):
-        if row[constants.OutDataColNames.COUNTRY] not in aggregate:
-            aggregate[row[constants.OutDataColNames.COUNTRY]] = #### [YOUR CODE HERE] ####
-        aggregate[row[constants.OutDataColNames.COUNTRY]] += #### [YOUR CODE HERE] ####
-
-    return aggregate
+    return final_aggregate
     ######################################## YOUR CODE HERE ##################################################
 
 
