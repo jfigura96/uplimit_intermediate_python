@@ -1,11 +1,20 @@
+import sys
 import os
-from w2.main import get_sales_information
-from w1.utils import DataReader
+CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+print(CURRENT_FOLDER)
+PARENT_DIR = os.path.dirname(CURRENT_FOLDER)
+sys.path.append(PARENT_DIR)
+print('')
+print(PARENT_DIR)
+
+w1_path = r"C:\Users\jakub\OneDrive\Pulpit\Uplimit\Intermediate_Python\uplimit_intermediate_python\w1"
+sys.path.append(w1_path)
+
+from main import get_sales_information
+from utils import DataReader
 import constants
 from global_utils import blockPrint, enablePrint
 from pprint import pprint
-
-CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 
 def test_data_reader():
