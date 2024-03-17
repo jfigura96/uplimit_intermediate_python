@@ -45,7 +45,19 @@ class DB:
         Read more about datatypes in Sqlite here -> https://www.sqlite.org/datatype3.html
         """
     ######################################## YOUR CODE HERE ##################################################
-
+        TABLE = f'''
+        CREATE TABLE IF NOT EXISTS {self._table_name} (
+            process_id TEXT PRIMARY KEY NOT NULL, 
+            file_name TEXT,
+            file_path TEXT,
+            description TEXT,
+            start_time TEXT,
+            end_time TEXT,
+            percentage REAL
+        )
+        '''
+        self._connection.execute(TABLE)
+        self._connection.commit()
     ######################################## YOUR CODE HERE ##################################################
 
     def insert(self, process_id, start_time, file_name=None, file_path=None,
@@ -63,7 +75,30 @@ class DB:
         :return: None
         """
     ######################################## YOUR CODE HERE ##################################################
-
+        INSERT= f'''
+        INSERT INTO {self._table_name}
+        (
+            process_id, 
+            file_name, 
+            file_path, 
+            description, 
+            start_time, 
+            end_time, 
+            percentage
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?) 
+        '''
+        params = [
+            process_id, 
+            file_name, 
+            file_path, 
+            description, 
+            start_time, 
+            end_time, 
+            percentage
+        ]
+        self._connection.execute(INSERT, params)
+        self._connection.commit()
     ######################################## YOUR CODE HERE ##################################################
 
     def read_all(self) -> List[Dict]:
@@ -95,7 +130,13 @@ class DB:
         :return: None
         """
     ######################################## YOUR CODE HERE ##################################################
-
+        UPDATE_QUERY = f'''
+        UPDATE {self._table_name}
+        SET percentage = {percentage}
+        WHERE process_id = '{process_id}'
+        '''
+        self._connection.execute(UPDATE_QUERY)
+        self._connection.commit()
     ######################################## YOUR CODE HERE ##################################################
 
 

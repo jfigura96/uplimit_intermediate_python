@@ -1,3 +1,12 @@
+import sys
+import os
+CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+print(CURRENT_FOLDER)
+PARENT_DIR = os.path.dirname(CURRENT_FOLDER)
+sys.path.append(PARENT_DIR)
+print('')
+print(PARENT_DIR)
+
 from w3.utils.database import DB
 from w3.utils.response_model import ProcessStatus
 import uuid

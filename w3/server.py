@@ -1,3 +1,13 @@
+import sys
+import os
+CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+print(CURRENT_FOLDER)
+PARENT_DIR = os.path.dirname(CURRENT_FOLDER)
+sys.path.append(PARENT_DIR)
+print('')
+print(PARENT_DIR)
+
+
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from typing import List, Dict, Union
@@ -40,9 +50,9 @@ async def get() -> Dict:
     should send a JSON response in the below format:
     {"status": "ok"}
     """
-
+    response = {"status":"ok"}
     ######################################## YOUR CODE HERE ##################################################
-
+    return response
     ######################################## YOUR CODE HERE ##################################################
 
 
@@ -53,7 +63,9 @@ async def get() -> HTMLResponse:
     should render the HTML file - index.html when a user goes to http://127.0.0.1:8000/
     """
     ######################################## YOUR CODE HERE ##################################################
-
+    with open("index.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(content=html)
     ######################################## YOUR CODE HERE ##################################################
 
 
@@ -64,5 +76,8 @@ async def get() -> List[ProcessStatus]:
     Get all the records from the process table and return it using the pydantic model ProcessStatus
     """
     ######################################## YOUR CODE HERE ##################################################
+    db = DB()
+    records = db.read_all()
 
+    return [ProcessStatus(**record) for record in records]
     ######################################## YOUR CODE HERE ##################################################

@@ -1,3 +1,13 @@
+import sys
+import os
+CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+print(CURRENT_FOLDER)
+PARENT_DIR = os.path.dirname(CURRENT_FOLDER)
+sys.path.append(PARENT_DIR)
+print('')
+print(PARENT_DIR)
+
+
 import datetime
 from typing import List, Dict
 from pprint import pprint
